@@ -20,6 +20,8 @@ views:
         show:
           - e5
           - e10
+          - diesel
+        sort: e5
         show_closed: true
         show_header: false
         stations:
@@ -57,6 +59,7 @@ views:
 |---------------|-------------------|----------|---
 | `name`        | String            | yes      | Name of the card that should be shown in the frontend
 | `show`        | [e5, e10, diesel] | yes      | What should be shown
+| `sort`        | [e5, e10, diesel] | yes      | What should be sorted
 | `show_closed` | Boolean           | no       | Show closed stations (default: false)
 | `show_header` | Boolean           | no       | Show card-header (default: true)
 | `stations`    | List of stations  | yes      | List of stations
