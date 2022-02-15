@@ -64,8 +64,9 @@ views:
 #### Stations
 | key      | value  | required | description
 |----------|--------|----------|---
-| `name`   | String | yes      | The name of the station (for example the street)
 | `brand`  | String | yes      | The brand of the station used for the icon
+| `street` | String | yes      | The street
+| `city`   | String | yes      | The City
 | `e5`     | Sensor | no*      | Sensor for the E5 price
 | `e10`    | Sensor | no*      | Sensor for the E10 price
 | `diesel` | Sensor | no*      | Sensor for the diesel price
