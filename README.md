@@ -10,6 +10,7 @@
 - "digits" parameter added. Price shown in 2 or 3 digits. Third digit is superscripted
 - "street" and "city" replaced name parameter. -> brand, street and city are shown each in different line
 - parameter "sort" added .> pick what to sort e5, e10 or diesel
+- fixed icon when show_closed was set to true and gas station was closed. https://github.com/home-assistant/frontend/pull/10182
 
 ## Installation
 1. Install this component by copying the `tankerkoenig-card.js` to your `/www/` folder.
