@@ -92,10 +92,23 @@ class TankerkoenigCard extends LitElement {
         const state = this.hass.states[station[type]] || null;
             
         if(state && state.state != 'unknown' && state.state != 'unavailable' && this.isOpen(station)) {
-            return html`<td><ha-label-badge
-              label="${type.toUpperCase()}"
-              @click="${() => this.fireEvent('hass-more-info', station[type])}"
-              ><span style="font-size: 75%;">${state.state.slice(0, -1)}<sup>${state.state.slice(-1)}</sup>&euro;</span></ha-label-badge></td>`;
+            
+            let digits = this.config.digits || '3';
+            
+            if(digits == '2')
+            {
+                return html`<td><ha-label-badge
+                  label="${type.toUpperCase()}"
+                  @click="${() => this.fireEvent('hass-more-info', station[type])}"
+                  ><span style="font-size: 75%;">${state.state.slice(0, -1)}&euro;</span></ha-label-badge></td>`;
+            }
+            else if(digits == '3')
+            {
+                return html`<td><ha-label-badge
+                  label="${type.toUpperCase()}"
+                  @click="${() => this.fireEvent('hass-more-info', station[type])}"
+                  ><span style="font-size: 75%;">${state.state.slice(0, -1)}<sup>${state.state.slice(-1)}</sup>&euro;</span></ha-label-badge></td>`;
+            }
         } else {
             return html`<td><ha-label-badge
               icon="mdi:gas-station-off-outline"
