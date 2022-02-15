@@ -15,15 +15,7 @@ class TankerkoenigCard extends LitElement {
     
     render() {
         this.stations.sort((a, b) => {
-            let key = '';
-            
-            if(a.diesel) {
-                key = 'diesel';
-            } else if(a.e5) {
-                key = 'e5';
-            } else if(a.e10) {
-                key = 'e10';
-            }
+            let key = this.config.sort || 'e5';
             
             if(this.hass.states[a[key]].state === 'unknown' || this.hass.states[a[key]].state === 'unavailable') {
                 return 1;
