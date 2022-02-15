@@ -106,7 +106,7 @@ class TankerkoenigCard extends LitElement {
               ><span style="font-size: 75%;">${state.state.slice(0, -1)}&euro;</span></ha-label-badge></td>`;
         } else {
             return html`<td><ha-label-badge
-              icon="mdi:lock-outline"
+              icon="mdi:gas-station-off-outline"
               label="${type.toUpperCase()}"
               @click="${() => this.fireEvent('hass-more-info', station[type])}"
               ></ha-label-badge></td>`;
