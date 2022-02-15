@@ -55,7 +55,7 @@ class TankerkoenigCard extends LitElement {
                         return html`<tr>
                         
                         <td class="logo"><img height="40" width="40" src="/local/gasstation_logos/${station.brand.toLowerCase()}.png"></td>
-                        <td class="name">${station.brand} <br> ${station.name}</td>
+                        <td class="name">${station.brand} <br> ${station.street} <br> ${station.city}</td>
                         ${this.renderPrice(station, 'e5')}
                         ${this.renderPrice(station, 'e10')}
                         ${this.renderPrice(station, 'diesel')}
