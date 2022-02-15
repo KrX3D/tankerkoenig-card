@@ -110,8 +110,8 @@ class TankerkoenigCard extends LitElement {
                   ><span style="font-size: 75%;">${state.state.slice(0, -1)}<sup>${state.state.slice(-1)}</sup>&euro;</span></ha-label-badge></td>`;
             }
         } else {
-            return html`<td><ha-label-badge
-              ha-icon="mdi:gas-station-off-outline"
+            return html`<td><ha-icon icon="mdi:gas-station-off-outline"></ha-icon>
+            <ha-label-badge
               label="${type.toUpperCase()}"
               @click="${() => this.fireEvent('hass-more-info', station[type])}"
               ></ha-label-badge></td>`;
