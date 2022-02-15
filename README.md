@@ -23,15 +23,34 @@ views:
         show_closed: true
         show_header: false
         stations:
-          - name: Kölner Str.
-            brand: ARAL
-            e5: sensor.aral_kolner_str_e5
-            e10: sensor.aral_kolner_str_e10
-          - name: Untergath
-            brand: ARAL
-            e5: sensor.aral_untergath_e5
-            e10: sensor.aral_untergath_e10
+          - brand: SB-Kaufland
+            street: Rother Str. 1b
+            city: 90530 Wendelstein
+            e5: sensor.tankerkoenig_sb_markttankstelle_wendelstein_rother_str_e5
+            e10: sensor.tankerkoenig_sb_markttankstelle_wendelstein_rother_str_e10
+            diesel: sensor.tankerkoenig_sb_markttankstelle_wendelstein_rother_str_diesel
+          - brand: OMV
+            street: Hauptstr. 17
+            city: 90596 Schwanstetten
+            e5: sensor.tankerkoenig_schwanstetten_hauptstr_17_e5
+            e10: sensor.tankerkoenig_schwanstetten_hauptstr_17_e10
+            diesel: sensor.tankerkoenig_schwanstetten_hauptstr_17_diesel
+          - brand: Agip
+            street: Rangaustr. 4a
+            city: 90530 Wendelstein
+            e5: sensor.tankerkoenig_wendelstein_rangaustr_4a_e5
+            e10: sensor.tankerkoenig_wendelstein_rangaustr_4a_e10
+            diesel: sensor.tankerkoenig_wendelstein_rangaustr_4a_diesel
+          - street: Bogenstr. 3
+            city: 90530 Wendelstein (Roeth.)
+            brand: Supol
+            e5: sensor.tankerkoenig_schwanstetten_hauptstr_17_e5
+            e10: sensor.tankerkoenig_schwanstetten_hauptstr_17_e10
+            diesel: sensor.tankerkoenig_schwanstetten_hauptstr_17_diesel
 ```
+
+![image](https://user-images.githubusercontent.com/18599852/154129128-5a86ee95-1cf4-42c4-83a9-aa01b1b176b4.png)
+
 
 ### Options
 | key           | values            | required | description
