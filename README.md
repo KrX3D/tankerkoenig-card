@@ -29,6 +29,7 @@ views:
           - e10
           - diesel
         sort: e5
+        digits: 2
         show_closed: true
         show_header: false
         stations:
@@ -66,7 +67,8 @@ views:
 |---------------|-------------------|----------|---
 | `name`        | String            | yes      | Name of the card that should be shown in the frontend
 | `show`        | [e5, e10, diesel] | yes      | What should be shown
-| `sort`        | [e5, e10, diesel] | yes      | What should be sorted (default: e5)
+| `sort`        | [e5, e10, diesel] | no       | What should be sorted (default: e5)
+| `digits`      | [2, 3]            | no       | How many digits to show (default: 3)
 | `show_closed` | Boolean           | no       | Show closed stations (default: false)
 | `show_header` | Boolean           | no       | Show card-header (default: true)
 | `stations`    | List of stations  | yes      | List of stations
