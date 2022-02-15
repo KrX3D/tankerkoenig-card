@@ -7,7 +7,7 @@
 
 ## Changed in this fork:
 
-- Price shown in 2 digits
+- "digits" parameter added. Price shown in 2 or 3 digits. Third digit is superscripted
 - "street" and "city" replaced name parameter. -> brand, street and city are shown each in different line
 - parameter "sort" added .> pick what to sort e5, e10 or diesel
 
