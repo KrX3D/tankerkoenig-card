@@ -4,6 +4,13 @@
 
 [![maintainer](https://img.shields.io/badge/maintainer-Goran%20Zunic%20%40panbachi-blue.svg?style=for-the-badge)](https://www.panbachi.de)
 
+
+## Changed in this fork:
+
+- Price shown in 2 digits
+- "street" and "city" replaced name parameter. -> brand, street and city are shown each in different line
+- parameter "sort" added .> pick what to sort e5, e10 or diesel
+
 ## Installation
 1. Install this component by copying the `tankerkoenig-card.js` to your `/www/` folder.
 2. Add this to your Lovelace-Configuration using the config options below example.
