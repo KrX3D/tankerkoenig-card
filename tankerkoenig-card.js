@@ -42,7 +42,7 @@ class TankerkoenigCard extends LitElement {
                 <table width="100%">
                     ${this.stations.map((station) => {
                     
-                        if(!this.isOpen(station) && this.config.show_closed !== true) return;
+                        //if(!this.isOpen(station) && this.config.show_closed !== true) return;
                     
                         return html`<tr>
                         
@@ -91,7 +91,8 @@ class TankerkoenigCard extends LitElement {
         
         const state = this.hass.states[station[type]] || null;
             
-        if(state && state.state != 'unknown' && state.state != 'unavailable' && this.isOpen(station)) {
+        //if(state && state.state != 'unknown' && state.state != 'unavailable' && this.isOpen(station)) {            
+        if(state && state.state != 'unknown' && state.state != 'unavailable') {
             
             let digits = this.config.digits || '3';
             
