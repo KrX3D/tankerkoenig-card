@@ -40,28 +40,28 @@ views:
             e5: sensor.tankerkoenig_sb_markttankstelle_wendelstein_rother_str_e5
             e10: sensor.tankerkoenig_sb_markttankstelle_wendelstein_rother_str_e10
             diesel: sensor.tankerkoenig_sb_markttankstelle_wendelstein_rother_str_diesel
-            state: binary_sensor.tankerkoenig_sb_markttankstelle_wendelstein_rother_str_status
+            state: binary_sensor.sb_markttankstelle_rother_str_1_b_status
           - brand: OMV
             street: Hauptstr. 17
             city: 90596 Schwanstetten
             e5: sensor.tankerkoenig_schwanstetten_hauptstr_17_e5
             e10: sensor.tankerkoenig_schwanstetten_hauptstr_17_e10
             diesel: sensor.tankerkoenig_schwanstetten_hauptstr_17_diesel
-            state: binary_sensor.tankerkoenig_schwanstetten_hauptstr_17_status
+            state: binary_sensor.omv_hauptstr_17_status
           - brand: Agip
             street: Rangaustr. 4a
             city: 90530 Wendelstein
             e5: sensor.tankerkoenig_wendelstein_rangaustr_4a_e5
             e10: sensor.tankerkoenig_wendelstein_rangaustr_4a_e10
             diesel: sensor.tankerkoenig_wendelstein_rangaustr_4a_diesel
-            state: binary_sensor.tankerkoenig_wendelstein_rangaustr_4a_status
+            state: binary_sensor.agip_eni_rangaustr_4a_status
           - street: Bogenstr. 3
             city: 90530 Wendelstein (Roeth.)
             brand: Supol
             e5: sensor.tankerkoenig_schwanstetten_hauptstr_17_e5
             e10: sensor.tankerkoenig_schwanstetten_hauptstr_17_e10
             diesel: sensor.tankerkoenig_schwanstetten_hauptstr_17_diesel
-            state: binary_sensor.tankerkoenig_schwanstetten_hauptstr_17_status
+            state: binary_sensor.supol_bogenstr_3_status
 ```
 
 ![image](https://user-images.githubusercontent.com/18599852/154129128-5a86ee95-1cf4-42c4-83a9-aa01b1b176b4.png)
