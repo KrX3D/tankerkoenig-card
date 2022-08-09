@@ -4,6 +4,9 @@
 
 [![maintainer](https://img.shields.io/badge/maintainer-Goran%20Zunic%20%40panbachi-blue.svg?style=for-the-badge)](https://www.panbachi.de)
 
+## Tankstellen ID:
+
+  https://creativecommons.tankerkoenig.de/TankstellenFinder/index.html
 
 ## Changed in this fork:
 
