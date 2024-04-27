@@ -1,8 +1,11 @@
-﻿# Tankerkoenig Lovelace Card
+# Original Tankerkoenig Card here
+https://github.com/panbachi/tankerkoenig-card
 
-[![Version](https://img.shields.io/badge/version-1.0.0-green.svg?style=for-the-badge)](#) [![mantained](https://img.shields.io/maintenance/yes/2022.svg?style=for-the-badge)](#) [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg?style=for-the-badge)](https://github.com/custom-components/hacs)
+# Tankerkoenig Lovelace Card
 
-[![maintainer](https://img.shields.io/badge/maintainer-Goran%20Zunic%20%40panbachi-blue.svg?style=for-the-badge)](https://www.panbachi.de)
+[![Version](https://img.shields.io/badge/version-2.0.0-green.svg)](#) [![mantained](https://img.shields.io/maintenance/yes/2024.svg)](#) [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/custom-components/hacs)
+
+[![maintainer](https://img.shields.io/badge/maintainer-KrX%20-blue.svg)](https://github.com/KrX3D)
 
 ## Tankstellen ID:
 
@@ -14,6 +17,9 @@
 - "street" and "city" replaced name parameter. -> brand, street and city are shown each in different line
 - parameter "sort" added .> pick what to sort e5, e10 or diesel
 - fixed icon when show_closed was set to true and gas station was closed. https://github.com/home-assistant/frontend/pull/10182
+- shows up in the card picker dialog
+- If no Parameter for "show" and "stations" (brand, street, city, state) was specified, this will display a red error card with the message below
+- Visual Card Editor added -> Basic, needs to be created nicer so it will be woring directly with HA
 
 ## Installation
 1. Install this component by copying the `tankerkoenig-card.js` to your `/www/` folder.
@@ -101,10 +107,3 @@ To use the icons you have to use lowercase names, which has to be the same as in
 For the brand ARAL there has to be an icon with the following path:
 
 `/www/gasstation_logos/aral.png`
-
-# Support me / Follow me
-[![Web](https://img.shields.io/badge/www-panbachi.de-blue.svg?style=flat-square&colorB=3d72a8&colorA=333333)](https://www.panbachi.de)
-[![Facebook](https://img.shields.io/badge/-%40panbachi.de-blue.svg?style=flat-square&logo=facebook&colorB=3B5998&colorA=eee)](https://www.facebook.com/panbachi.de/)
-[![Twitter](https://img.shields.io/badge/-%40panbachi-blue.svg?style=flat-square&logo=twitter&colorB=1DA1F2&colorA=eee)](https://twitter.com/panbachi)
-[![Instagram](https://img.shields.io/badge/-%40panbachi.de-blue.svg?style=flat-square&logo=instagram&colorB=E4405F&colorA=eee)](http://instagram.com/panbachi.de)
-[![YouTube](https://img.shields.io/badge/-%40panbachi-blue.svg?style=flat-square&logo=youtube&colorB=FF0000&colorA=eee&logoColor=FF0000)](https://www.youtube.com/channel/UCO7f2L7ZsDCpOtRfKnPqNow)
