@@ -1,72 +1,183 @@
-﻿# Tankerkoenig Lovelace Card
+# Tankerkoenig Lovelace Card
 
-[![Version](https://img.shields.io/badge/version-1.0.0-green.svg?style=for-the-badge)](#) [![mantained](https://img.shields.io/maintenance/yes/2022.svg?style=for-the-badge)](#) [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg?style=for-the-badge)](https://github.com/custom-components/hacs)
+[![Version](https://img.shields.io/badge/version-2.0.0-green.svg)](#) [![mantained](https://img.shields.io/maintenance/yes/2025.svg)](#) [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/custom-components/hacs)
 
-[![maintainer](https://img.shields.io/badge/maintainer-Goran%20Zunic%20%40panbachi-blue.svg?style=for-the-badge)](https://www.panbachi.de)
+[![maintainer](https://img.shields.io/badge/maintainer-KrX%20-blue.svg)](https://github.com/KrX3D)
+
+---
+
+## Tankstellen ID:
+
+  https://creativecommons.tankerkoenig.de/TankstellenFinder/index.html
+
+---
+
+## Overview
+
+- **Enhanced Sorting:**  
+  Now choose which fuel type to sort by using the `sort` parameter (default is `e5`).
+
+- **Detailed Station Info:**  
+  Instead of a single "name" field, the card now displays the station’s **brand**, **street**, and **city** each on its own line.
+
+- **Price Formatting:**  
+  The new `digits` parameter allows you to display prices in 2-digit or 3-digit format. When using 3 digits, the last digit is superscripted for a cleaner look.
+
+- **Dynamic Styling:**  
+  Customize colors and sizes with new options:  
+  - `opened_color` & `closed_color` (for station state indication)  
+  - `price_text_color` & `label_text_color`  
+  - `border_thickness`, `price_font_size`, and `icon_size`
+
+- **Improved Closed/Unknown Handling:**  
+  When a station is closed or its sensor state is unknown, the card displays a configurable icon. Set `icon_closed` for closed stations and `icon_unknown` for unknown states.
+
+- **Configuration Error Feedback:**  
+  If required parameters (such as `show` or proper station fields) are missing, the card will render an error card in red with a detailed message.
+
+- **Visual Card Editor:**  
+  A basic, integrated visual editor (`tankerkoenig-card-editor`) is now available to help configure the card through a graphical interface.
+
+- **Card Picker Registration:**  
+  The card now registers itself to appear in the Lovelace card picker.
+
+---
 
 ## Installation
-1. Install this component by copying the `tankerkoenig-card.js` to your `/www/` folder.
-2. Add this to your Lovelace-Configuration using the config options below example.
-3. Put the icons as `*.png` for the brands in the `/www/gasstation_logos/` folder.
+
+1. **Copy the File:**  
+   Place the `tankerkoenig-card.js` file into your Home Assistant `www/` folder.
+2. **Add Resource to Lovelace:**  
+   Include the resource in your Lovelace configuration:
+   ```yaml
+   resources:
+     - url: /local/tankerkoenig-card.js?v=2.0.0
+       type: module
+   ```
+3. **Icons:**  
+   Place your brand icons (in *.png format) in the /www/gasstation_logos/ folder. The icon filenames must be the lowercase version of the brand name (e.g., /www/gasstation_logos/aral.png).
+
+---
+
+## Configuration Example
+
+Below is an example configuration that demonstrates the new parameters:
 
 ```yaml
-resources:
-  - url: /local/tankerkoenig-card.js?v=1.0.0
-    type: js
 views:
-  - cards:
+  - title: Fuel Prices
+    cards:
       - type: 'custom:tankerkoenig-card'
         name: Benzinpreise
-        show:
+        show: 
           - e5
           - e10
+          - diesel
+        sort: e5
+        digits: 2
         show_closed: true
         show_header: false
+        icon_closed: mdi:gas-station-off-outline
+        icon_unknown: mdi:minus
+        opened_color: dodgerblue
+        closed_color: dodgerblue
+        price_text_color: white
+        label_text_color: white
+        border_thickness: 2px
+        price_font_size: 12px
+        icon_size: 22px
         stations:
-          - name: Kölner Str.
-            brand: ARAL
-            e5: sensor.aral_kolner_str_e5
-            e10: sensor.aral_kolner_str_e10
-            state: binary_sensor.aral_kolner_str_status
-          - name: Untergath
-            brand: ARAL
-            e5: sensor.aral_untergath_e5
-            e10: sensor.aral_untergath_e10
-            state: binary_sensor.aral_untergath_status
+          - brand: SB-Kaufland
+            street: Rother Str. 1b
+            city: 90530 Wendelstein
+            e5: sensor.tankerkoenig_sb_markttankstelle_wendelstein_rother_str_e5
+            e10: sensor.tankerkoenig_sb_markttankstelle_wendelstein_rother_str_e10
+            diesel: sensor.tankerkoenig_sb_markttankstelle_wendelstein_rother_str_diesel
+            state: binary_sensor.sb_markttankstelle_rother_str_1_b_status
+          - brand: OMV
+            street: Hauptstr. 17
+            city: 90596 Schwanstetten
+            e5: sensor.tankerkoenig_schwanstetten_hauptstr_17_e5
+            e10: sensor.tankerkoenig_schwanstetten_hauptstr_17_e10
+            diesel: sensor.tankerkoenig_schwanstetten_hauptstr_17_diesel
+            state: binary_sensor.omv_hauptstr_17_status
+          - brand: Agip
+            street: Rangaustr. 4a
+            city: 90530 Wendelstein
+            e5: sensor.tankerkoenig_wendelstein_rangaustr_4a_e5
+            e10: sensor.tankerkoenig_wendelstein_rangaustr_4a_e10
+            diesel: sensor.tankerkoenig_wendelstein_rangaustr_4a_diesel
+            state: binary_sensor.agip_eni_rangaustr_4a_status
+          - brand: Supol
+            street: Bogenstr. 3
+            city: 90530 Wendelstein (Roeth.)
+            e5: sensor.tankerkoenig_schwanstetten_hauptstr_17_e5
+            e10: sensor.tankerkoenig_schwanstetten_hauptstr_17_e10
+            diesel: sensor.tankerkoenig_schwanstetten_hauptstr_17_diesel
+            state: binary_sensor.supol_bogenstr_3_status
 ```
 
+---
+
+![image](https://user-images.githubusercontent.com/18599852/154129128-5a86ee95-1cf4-42c4-83a9-aa01b1b176b4.png)
+
+---
+
 ### Options
-| key           | values            | required | description
-|---------------|-------------------|----------|---
-| `name`        | String            | yes      | Name of the card that should be shown in the frontend
-| `show`        | [e5, e10, diesel] | yes      | What should be shown
-| `show_closed` | Boolean           | no       | Show closed stations (default: false)
-| `show_header` | Boolean           | no       | Show card-header (default: true)
-| `stations`    | List of stations  | yes      | List of stations
 
-#### Stations
-| key      | value  | required | description
-|----------|--------|----------|---
-| `name`   | String | yes      | The name of the station (for example the street)
-| `brand`  | String | yes      | The brand of the station used for the icon
-| `e5`     | Sensor | no*      | Sensor for the E5 price
-| `e10`    | Sensor | no*      | Sensor for the E10 price
-| `diesel` | Sensor | no*      | Sensor for the diesel price
-| `state`  | Sensor | yes      | Sensor of station state
+### General Card Options
 
-*only required if it should be shown
+| Key           | Values                          | Required | Description                                                                                      |
+|---------------|---------------------------------|----------|--------------------------------------------------------------------------------------------------|
+| `name`        | String                          | Yes      | Card title (displayed in the header if `show_header` is true)                                    |
+| `show`        | `[e5, e10, diesel]`             | Yes      | Which fuel types to display                                                                     |
+| `sort`        | `[e5, e10, diesel]`             | No       | Fuel type to sort by (default: `e5`)                                                              |
+| `digits`      | `[2, 3]`                        | No       | Number of price digits to display. With 3 digits, the last digit is superscripted (default: 2)    |
+| `show_closed` | Boolean                         | No       | Display stations that are closed (default: false)                                               |
+| `show_header` | Boolean                         | No       | Display the card header (default: true)                                                         |
 
-## Additional
-To use the icons you have to use lowercase names, which has to be the same as in the `brand` settings. The icons must be in `*.png` format.
+### Styling Options
+
+| Key                 | Values         | Required | Description                                                                                          |
+|---------------------|----------------|----------|------------------------------------------------------------------------------------------------------|
+| `opened_color`      | Color String   | No       | Color used when the station is open (default: `dodgerblue`)                                          |
+| `closed_color`      | Color String   | No       | Color used when the station is closed (default: `dodgerblue`)                                        |
+| `price_text_color`  | Color String   | No       | Color of the displayed price text (default: `white`)                                                 |
+| `label_text_color`  | Color String   | No       | Color of the fuel type label text (default: `white`)                                                 |
+| `border_thickness`  | CSS Size (px)  | No       | Thickness of the badge border (default: `2px`)                                                       |
+| `price_font_size`   | CSS Size (px)  | No       | Font size of the price text (default: `12px`)                                                        |
+| `icon_size`         | CSS Size (px)  | No       | Size of the icon when a station is closed or unknown (default: `22px`)                               |
+| `icon_closed`       | Icon String    | No       | Icon to display for closed stations (default: `mdi:gas-station-off-outline`)                         |
+| `icon_unknown`      | Icon String    | No       | Icon to display for stations with unknown sensor states (default: `mdi:minus`)                       |
+
+### Station Options
+
+Each station in the `stations` list must include the following keys:
+
+| Key      | Type   | Required      | Description                                                               |
+|----------|--------|---------------|---------------------------------------------------------------------------|
+| `brand`  | String | Yes           | The brand of the station; also used to select the corresponding icon      |
+| `street` | String | Yes           | Street address of the station                                             |
+| `city`   | String | Yes           | City where the station is located                                         |
+| `e5`     | Sensor | Conditionally | Sensor for the E5 price (only required if `e5` is included in `show`)       |
+| `e10`    | Sensor | Conditionally | Sensor for the E10 price (only required if `e10` is included in `show`)      |
+| `diesel` | Sensor | Conditionally | Sensor for the Diesel price (only required if `diesel` is included in `show`) |
+| `state`  | Sensor | Yes           | Sensor indicating the station state (open/closed)                         |
+
+---
+
+## Additional Information
+
+- Icons:
+To use the brand icons, ensure that the icon filename is the lowercase version of the brand value (e.g., for brand ARAL, the icon should be located at /www/gasstation_logos/aral.png).
+
+- Visual Card Editor:
+A basic visual editor is provided for this card. While it offers all the basic functionality, further improvements may be made in the future for tighter integration with Home Assistant’s UI.
+
+- Configuration Errors:
+If the card configuration is missing required keys (like show or valid station details), a red error card will be displayed with specific error messages.
 
 ### Example
 For the brand ARAL there has to be an icon with the following path:
 
 `/www/gasstation_logos/aral.png`
-
-# Support me / Follow me
-[![Web](https://img.shields.io/badge/www-panbachi.de-blue.svg?style=flat-square&colorB=3d72a8&colorA=333333)](https://www.panbachi.de)
-[![Facebook](https://img.shields.io/badge/-%40panbachi.de-blue.svg?style=flat-square&logo=facebook&colorB=3B5998&colorA=eee)](https://www.facebook.com/panbachi.de/)
-[![Twitter](https://img.shields.io/badge/-%40panbachi-blue.svg?style=flat-square&logo=twitter&colorB=1DA1F2&colorA=eee)](https://twitter.com/panbachi)
-[![Instagram](https://img.shields.io/badge/-%40panbachi.de-blue.svg?style=flat-square&logo=instagram&colorB=E4405F&colorA=eee)](http://instagram.com/panbachi.de)
-[![YouTube](https://img.shields.io/badge/-%40panbachi-blue.svg?style=flat-square&logo=youtube&colorB=FF0000&colorA=eee&logoColor=FF0000)](https://www.youtube.com/channel/UCO7f2L7ZsDCpOtRfKnPqNow)
