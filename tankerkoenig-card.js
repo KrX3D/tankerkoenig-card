@@ -231,9 +231,9 @@ class TankerkoenigCard extends LitElement {
 
     const errors = [];
     newConfig.stations.forEach((station, index) => {
-      if (!station.brand) errors.push(`Station ${index + 1}: "brand" is required.`);
-      if (!station.street) errors.push(`Station ${index + 1}: "street" is required.`);
-      if (!station.city) errors.push(`Station ${index + 1}: "city" is required.`);
+      //if (!station.brand) errors.push(`Station ${index + 1}: "brand" is required.`);
+      //if (!station.street) errors.push(`Station ${index + 1}: "street" is required.`);
+      //if (!station.city) errors.push(`Station ${index + 1}: "city" is required.`);
       if (!station.state) errors.push(`Station ${index + 1}: "state" is required.`);
     });
     this._configErrors = errors;
