@@ -189,9 +189,13 @@ class TankerkoenigCard extends LitElement {
           @click="${() => this.fireEvent('hass-more-info', entityId)}"
         >
           <div class="badge-price">
-            <!-- Icon size with --mdc-icon-size + shift up 2px -->
+            <!-- Icon size with --mdc-icon-size + shift up 5px -->
             <ha-icon
-              style="--mdc-icon-size: ${this.config.icon_size || '22px'}; position: relative; top: -2px;"
+              style="
+                --mdc-icon-size: ${this.config.icon_size || '22px'};
+                position: relative;
+                top: -5px;
+              "
               icon="${icon}"
             ></ha-icon>
           </div>
@@ -230,7 +234,6 @@ class TankerkoenigCard extends LitElement {
 
     const errors = [];
     newConfig.stations.forEach((station, index) => {
-      // Allow brand, street, and city to be empty; require only state
       if (!station.state) errors.push(`Station ${index + 1}: "state" is required.`);
     });
     this._configErrors = errors;
@@ -493,14 +496,17 @@ class TankerkoenigCardEditor extends LitElement {
           font-size: 12px;
           color: black;
         }
+        .option {
+          margin-right: 30px;
+        }
         .show-options {
           display: flex;
           align-items: center;
         }
-        .option {
-          display: flex;
-          align-items: center;
-          margin-right: 10px;
+        .option label {
+          position: relative;
+          top: -2px; /* Adjust this value as needed */
+          margin-right: -3px;
         }
         button {
           background-color: #4caf50;
