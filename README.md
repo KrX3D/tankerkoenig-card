@@ -67,7 +67,7 @@
 
 ## Configuration Example
 
-Below is an example configuration that demonstrates the new parameters, including the logo option:
+Below is an example configuration that demonstrates the new parameters:
 
 ```yaml
 views:
@@ -126,6 +126,51 @@ views:
             state: binary_sensor.supol_bogenstr_3_status
             logo: supol-logo
 ```
+![image](https://user-images.githubusercontent.com/18599852/154129128-5a86ee95-1cf4-42c4-83a9-aa01b1b176b4.png)
+
+---
+
+### Options
+
+### General Card Options
+
+| Key           | Values                          | Required | Description                                                                                      |
+|---------------|---------------------------------|----------|--------------------------------------------------------------------------------------------------|
+| `name`        | String                          | Yes      | Card title (displayed in the header if `show_header` is true)                                    |
+| `show`        | `[e5, e10, diesel]`             | Yes      | Which fuel types to display                                                                     |
+| `sort`        | `[e5, e10, diesel]`             | No       | Fuel type to sort by (default: `e5`)                                                              |
+| `digits`      | `[2, 3]`                        | No       | Number of price digits to display. With 3 digits, the last digit is superscripted (default: 2)    |
+| `show_closed` | Boolean                         | No       | Display stations that are closed (default: false)                                               |
+| `show_header` | Boolean                         | No       | Display the card header (default: true)                                                         |
+
+### Styling Options
+
+| Key                 | Values         | Required | Description                                                                                          |
+|---------------------|----------------|----------|------------------------------------------------------------------------------------------------------|
+| `opened_color`      | Color String   | No       | Color used when the station is open (default: `dodgerblue`)                                          |
+| `closed_color`      | Color String   | No       | Color used when the station is closed (default: `dodgerblue`)                                        |
+| `price_text_color`  | Color String   | No       | Color of the displayed price text (default: `white`)                                                 |
+| `label_text_color`  | Color String   | No       | Color of the fuel type label text (default: `white`)                                                 |
+| `border_thickness`  | CSS Size (px)  | No       | Thickness of the badge border (default: `2px`)                                                       |
+| `price_font_size`   | CSS Size (px)  | No       | Font size of the price text (default: `12px`)                                                        |
+| `icon_size`         | CSS Size (px)  | No       | Size of the icon when a station is closed or unknown (default: `22px`)                               |
+| `icon_closed`       | Icon String    | No       | Icon to display for closed stations (default: `mdi:gas-station-off-outline`)                         |
+| `icon_unknown`      | Icon String    | No       | Icon to display for stations with unknown sensor states (default: `mdi:minus`)                       |
+
+### Station Options
+
+Each station in the `stations` list must include the following keys:
+
+| Key      | Type   | Required      | Description                                                               |
+|----------|--------|---------------|---------------------------------------------------------------------------|
+| `brand`  | String | Yes           | The brand of the station; also used to select the corresponding icon      |
+| `street` | String | Yes           | Street address of the station                                             |
+| `city`   | String | Yes           | City where the station is located                                         |
+| `e5`     | Sensor | Conditionally | Sensor for the E5 price (only required if `e5` is included in `show`)       |
+| `e10`    | Sensor | Conditionally | Sensor for the E10 price (only required if `e10` is included in `show`)      |
+| `diesel` | Sensor | Conditionally | Sensor for the Diesel price (only required if `diesel` is included in `show`) |
+| `state`  | Sensor | Yes           | Sensor indicating the station state (open/closed)                         |
+| `logo`   | String | No            | Optional filename for the station logo. If provided, the card will load the logo from `/local/gasstation_logos/<logo>.png`. If empty, no logo is displayed. |
 
 ---
 
