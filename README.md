@@ -170,22 +170,21 @@ Each station in the `stations` list must include the following keys:
 | `e10`    | Sensor | Conditionally | Sensor for the E10 price (only required if `e10` is included in `show`)      |
 | `diesel` | Sensor | Conditionally | Sensor for the Diesel price (only required if `diesel` is included in `show`) |
 | `state`  | Sensor | Yes           | Sensor indicating the station state (open/closed)                         |
-| `logo`   | String | No            | Optional filename for the station logo. If provided, the card will load the logo from `/local/gasstation_logos/<logo>.png`. If empty, no logo is displayed. |
+| `logo`   | String | No            | Optional. Custom filename for the station logo. If provided, the card will display the logo from `/local/gasstation_logos/<logo>.png`. If empty, no logo is displayed. |
 
 ---
 
 ## Additional Information
 
 - **Icons:**  
-  To use the brand icons, ensure that the icon filename is the lowercase version of the brand value (if no custom logo is provided). With the new logo option, you can override this behavior by specifying the `logo` field.
+  To display a logo for a station, specify a custom filename in the `logo` field for that station. If the `logo` field is left empty, no logo will be displayed.
+
+- **Example:**  
+  For example, if you set `logo: "aral-logo"` for a station, the card will display the image from:  
+  `/www/gasstation_logos/aral-logo.png`
 
 - **Visual Card Editor:**  
   A basic visual editor is provided for this card. While it offers all the basic functionality, further improvements may be made in the future for tighter integration with Home Assistant’s UI.
 
 - **Configuration Errors:**  
   If the card configuration is missing required keys (like `show` or valid station `state`), a red error card will be displayed with specific error messages.
-
-### Example
-For the brand ARAL there has to be an icon with the following path if no custom logo is set:
-
-`/www/gasstation_logos/aral.png`
