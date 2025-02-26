@@ -61,7 +61,9 @@ class TankerkoenigCard extends LitElement {
               return html`
                 <tr>
                   <td class="gasstation">
-                    <img height="40" width="40" src="/local/gasstation_logos/${station.brand.toLowerCase()}.png">
+                    ${station.logo 
+                      ? html`<img height="40" width="40" src="/local/gasstation_logos/${station.logo}.png">` 
+                      : ""}
                   </td>
                   <td class="name">
                     ${station.brand} <br>
@@ -85,7 +87,7 @@ class TankerkoenigCard extends LitElement {
   }
 
   static getStubConfig() {
-    // Default config with icon_size set to "12px"
+    // Default config with icon_size set to "22px"
     return { 
       show: ["e5", "e10", "diesel"],
       opened_color: "dodgerblue",
@@ -102,7 +104,8 @@ class TankerkoenigCard extends LitElement {
         e5: "sensor.esso_gutleutstrasse_130_e5",
         e10: "sensor.esso_gutleutstrasse_130_e10",
         diesel: "sensor.esso_gutleutstrasse_130_diesel",
-        state: "binary_sensor.esso_gutleutstrasse_130_status"
+        state: "binary_sensor.esso_gutleutstrasse_130_status",
+        logo: ""  // New field for logo filename
       }]
     };
   }
@@ -186,13 +189,9 @@ class TankerkoenigCard extends LitElement {
           @click="${() => this.fireEvent('hass-more-info', entityId)}"
         >
           <div class="badge-price">
-            <!-- Icon size with --mdc-icon-size + shift up 2px using position: relative -->
+            <!-- Icon size with --mdc-icon-size + shift up 2px -->
             <ha-icon
-              style="
-                --mdc-icon-size: ${this.config.icon_size || '22px'};
-                position: relative;
-                top: -5px;
-              "
+              style="--mdc-icon-size: ${this.config.icon_size || '22px'}; position: relative; top: -2px;"
               icon="${icon}"
             ></ha-icon>
           </div>
@@ -231,9 +230,7 @@ class TankerkoenigCard extends LitElement {
 
     const errors = [];
     newConfig.stations.forEach((station, index) => {
-      //if (!station.brand) errors.push(`Station ${index + 1}: "brand" is required.`);
-      //if (!station.street) errors.push(`Station ${index + 1}: "street" is required.`);
-      //if (!station.city) errors.push(`Station ${index + 1}: "city" is required.`);
+      // Allow brand, street, and city to be empty; require only state
       if (!station.state) errors.push(`Station ${index + 1}: "state" is required.`);
     });
     this._configErrors = errors;
@@ -341,6 +338,7 @@ const ICON_OPTIONS = [
   "mdi:power-plug"
 ];
 
+// 0px to 20px for border thickness and price font; icon size: 10px to 30px
 const borderThicknessOptions = Array.from({ length: 21 }, (_, i) => i + "px");
 const priceFontSizeOptions = Array.from({ length: 21 }, (_, i) => i + "px");
 const iconSizeOptions = Array.from({ length: 21 }, (_, i) => (i + 10) + "px");
@@ -412,7 +410,8 @@ class TankerkoenigCardEditor extends LitElement {
       e5: "",
       e10: "",
       diesel: "",
-      state: ""
+      state: "",
+      logo: ""  // New field for logo filename
     });
     this._config = { ...this._config, stations: this._stations };
     this.fireConfigChanged();
@@ -494,17 +493,14 @@ class TankerkoenigCardEditor extends LitElement {
           font-size: 12px;
           color: black;
         }
-        .option {
-          margin-right: 30px;
-        }
         .show-options {
           display: flex;
           align-items: center;
         }
-        .option label {
-          position: relative;
-          top: -2px; /* Adjust this value as needed */
-          margin-right: -3px;
+        .option {
+          display: flex;
+          align-items: center;
+          margin-right: 10px;
         }
         button {
           background-color: #4caf50;
@@ -647,6 +643,11 @@ class TankerkoenigCardEditor extends LitElement {
               <div class="row">
                 <label for="state_${index}">State:</label>
                 <input type="text" id="state_${index}" .value="${station.state}" @input="${(e) => this._updateStationField(e, 'state', index)}">
+              </div>
+              <!-- New option for logo filename -->
+              <div class="row">
+                <label for="logo_${index}">Logo Filename:</label>
+                <input type="text" id="logo_${index}" .value="${station.logo}" @input="${(e) => this._updateStationField(e, 'logo', index)}">
               </div>
               <div class="row">
                 <button @click="${() => this._removeStation(index)}">Remove Station</button>
