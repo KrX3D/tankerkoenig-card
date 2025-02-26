@@ -60,8 +60,8 @@
    ```
 
 3. **Icons:**  
-   Place your brand icons (in *.png format) in the `/www/gasstation_logos/` folder. The icon filenames must be the lowercase version of the brand name (e.g., `/www/gasstation_logos/aral.png`).  
-   **Note:** With the new logo option, you can override this behavior by specifying a custom filename for each station.
+  If a custom logo is provided for a station using the `logo` field, the card will display the image from `/local/gasstation_logos/<logo>.png`.  
+  If the `logo` field is empty or not provided, no logo will be displayed.
 
 ---
 
