@@ -34,17 +34,29 @@ class TankerkoenigCard extends LitElement {
       `;
     }
 
-    // Sort stations based on chosen sort key
-    const sortKey = this.config.sort || 'e5';
-    this.stations.sort((a, b) => {
-      const stateA = this.hass.states[a[sortKey]];
-      const stateB = this.hass.states[b[sortKey]];
-      if (!stateA || stateA.state === 'unknown' || stateA.state === 'unavailable') return 1;
-      if (!stateB || stateB.state === 'unknown' || stateB.state === 'unavailable') return -1;
-      if (stateA.state > stateB.state) return 1;
-      if (stateB.state > stateA.state) return -1;
-      return 0;
-    });
+    // Separate open and closed stations
+    const openStations = this.stations.filter(station => this.isOpen(station));
+    const closedStations = this.stations.filter(station => !this.isOpen(station));
+
+    let sortedOpenStations = [];
+    // Only sort open stations if more than one is open
+    if (openStations.length > 1) {
+      const sortKey = this.config.sort || 'e5';
+      sortedOpenStations = openStations.sort((a, b) => {
+        const stateA = this.hass.states[a[sortKey]];
+        const stateB = this.hass.states[b[sortKey]];
+        if (!stateA || stateA.state === 'unknown' || stateA.state === 'unavailable') return 1;
+        if (!stateB || stateB.state === 'unknown' || stateB.state === 'unavailable') return -1;
+        if (stateA.state > stateB.state) return 1;
+        if (stateB.state > stateA.state) return -1;
+        return 0;
+      });
+    } else {
+      sortedOpenStations = openStations;
+    }
+
+    // If all stations are closed, do not sort
+    const sortedStations = sortedOpenStations.concat(closedStations);
 
     let header = '';
     if (this.show_header === true) {
@@ -55,8 +67,8 @@ class TankerkoenigCard extends LitElement {
       <ha-card elevation="2" header="${header}">
         <div class="container">
           <table width="100%">
-            ${this.stations.map(station => {
-              // Skip closed stations if "show_closed" is not enabled
+            ${sortedStations.map(station => {
+              // If station is closed and show_closed is false, skip it.
               if (!this.isOpen(station) && this.config.show_closed !== true) return;
               return html`
                 <tr>
@@ -66,9 +78,13 @@ class TankerkoenigCard extends LitElement {
                       : ""}
                   </td>
                   <td class="name">
-                    ${station.brand} <br>
-                    ${station.street} <br>
-                    ${station.city}
+                    ${[station.brand, station.street, station.city]
+                      .filter(line => line && line.trim() !== "")
+                      .map((line, index, arr) => {
+                        // Insert a <br> only between lines, not after the last one
+                        return html`${line}${index < arr.length - 1 ? html`<br>` : ""}`;
+                      })
+                    }
                   </td>
                   ${this.renderPrice(station, 'e5')}
                   ${this.renderPrice(station, 'e10')}
@@ -189,7 +205,7 @@ class TankerkoenigCard extends LitElement {
           @click="${() => this.fireEvent('hass-more-info', entityId)}"
         >
           <div class="badge-price">
-            <!-- Icon size with --mdc-icon-size + shift up 5px -->
+            <!-- Icon size with --mdc-icon-size and shifted up 5px -->
             <ha-icon
               style="
                 --mdc-icon-size: ${this.config.icon_size || '22px'};
@@ -234,6 +250,7 @@ class TankerkoenigCard extends LitElement {
 
     const errors = [];
     newConfig.stations.forEach((station, index) => {
+      // Allow brand, street, and city to be empty; require only state
       if (!station.state) errors.push(`Station ${index + 1}: "state" is required.`);
     });
     this._configErrors = errors;
@@ -496,16 +513,18 @@ class TankerkoenigCardEditor extends LitElement {
           font-size: 12px;
           color: black;
         }
-        .option {
-          margin-right: 30px;
-        }
         .show-options {
           display: flex;
           align-items: center;
         }
+        .option {
+          display: flex;
+          align-items: center;
+          margin-right: 30px;
+        }
         .option label {
           position: relative;
-          top: -2px; /* Adjust this value as needed */
+          top: -2px;
           margin-right: -3px;
         }
         button {
