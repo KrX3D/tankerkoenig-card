@@ -517,8 +517,9 @@ class TankerkoenigCardEditor extends LitElement {
         .show-options {
           display: flex;
           align-items: center;
+          flex: 1;
           flex-wrap: wrap;
-          gap: 6px 16px;
+          gap: 4px 10px;
         }
         .option {
           display: inline-flex;
@@ -533,6 +534,10 @@ class TankerkoenigCardEditor extends LitElement {
           border-radius: 3px;
           cursor: pointer;
           font-size: 12px;
+          text-shadow: 0 0 1px rgba(0, 0, 0, 0.6);
+        }
+        button.button-remove {
+          background-color: #e57373;
         }
         .station {
           border-top: 1px solid #ccc;
@@ -675,13 +680,13 @@ class TankerkoenigCardEditor extends LitElement {
                 <input type="text" id="logo_${index}" .value="${station.logo}" @input="${(e) => this._updateStationField(e, 'logo', index)}">
               </div>
               <div class="row">
-                <button @click="${() => this._removeStation(index)}">Remove Station</button>
+                <button class="button-remove" @click="${() => this._removeStation(index)}">Remove Station</button>
               </div>
             </div>
           </div>
         `)}
         <div class="row">
-          <button @click="${this._addStation}">Add Station</button>
+          <button class="button-add" @click="${this._addStation}">Add Station</button>
         </div>
       </div>
     `;
