@@ -23,16 +23,7 @@ class TankerkoenigCard extends LitElement {
   }
 
   render() {
-    // If there are configuration errors, display them in the preview card
-    if (this._configErrors && this._configErrors.length > 0) {
-      return html`
-        <ha-card header="Configuration Error">
-          <div class="error" style="color: red; padding: 16px;">
-            ${this._configErrors.map(err => html`<div>${err}</div>`)}
-          </div>
-        </ha-card>
-      `;
-    }
+    const configErrors = this.validateConfig(this.config);
 
     // Separate open and closed stations
     const openStations = this.stations.filter(station => this.isOpen(station));
@@ -64,6 +55,15 @@ class TankerkoenigCard extends LitElement {
     }
 
     return html`
+      ${configErrors.length > 0
+        ? html`
+            <ha-card header="Configuration Error">
+              <div class="error" style="color: red; padding: 16px;">
+                ${configErrors.map(err => html`<div>${err}</div>`)}
+              </div>
+            </ha-card>
+          `
+        : ""}
       <ha-card elevation="2" header="${header}">
         <div class="container">
           <table width="100%">
@@ -246,13 +246,6 @@ class TankerkoenigCard extends LitElement {
       throw new Error('Stations must be defined as an array in the configuration!');
     }
 
-    const errors = [];
-    newConfig.stations.forEach((station, index) => {
-      // Allow brand, street, and city to be empty; require only state
-      if (!station.state) errors.push(`Station ${index + 1}: "state" is required.`);
-    });
-    this._configErrors = errors;
-
     this.config = newConfig;
     this.show_header = this.config.show_header !== false;
     this.has = {
@@ -261,6 +254,32 @@ class TankerkoenigCard extends LitElement {
       diesel: this.config.show.includes('diesel'),
     };
     this.stations = this.config.stations.slice();
+  }
+
+  validateConfig(config) {
+    if (!config || !config.stations || !Array.isArray(config.stations)) return [];
+    const errors = [];
+    const requiredByShow = [];
+    if (Array.isArray(config.show)) {
+      if (config.show.includes('e5')) requiredByShow.push('e5');
+      if (config.show.includes('e10')) requiredByShow.push('e10');
+      if (config.show.includes('diesel')) requiredByShow.push('diesel');
+    }
+
+    config.stations.forEach((station, index) => {
+      const missing = [];
+      if (!station.brand) missing.push('brand');
+      if (!station.street) missing.push('street');
+      if (!station.city) missing.push('city');
+      if (!station.state) missing.push('state');
+      requiredByShow.forEach((fuel) => {
+        if (!station[fuel]) missing.push(fuel);
+      });
+      if (missing.length > 0) {
+        errors.push(`Station ${index + 1}: missing ${missing.join(', ')}.`);
+      }
+    });
+    return errors;
   }
 
   getCardSize() {
@@ -533,8 +552,8 @@ class TankerkoenigCardEditor extends LitElement {
           border: none;
           border-radius: 3px;
           cursor: pointer;
-          font-size: 12px;
-          text-shadow: 0 0 1px rgba(0, 0, 0, 0.6);
+          font-size: 13px;
+          text-shadow: 0 0 2px rgba(0, 0, 0, 0.75);
         }
         button.button-remove {
           background-color: #e57373;
