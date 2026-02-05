@@ -108,8 +108,6 @@ class TankerkoenigCard extends LitElement {
       show: ["e5", "e10", "diesel"],
       opened_color: "dodgerblue",
       closed_color: "dodgerblue",
-      price_text_color: "white",
-      label_text_color: "white",
       border_thickness: "2px",
       price_font_size: "12px",
       icon_size: "22px",
@@ -171,9 +169,9 @@ class TankerkoenigCard extends LitElement {
           style="
             --badge-color: ${circleColor};
             --badge-border-thickness: ${this.config.border_thickness || '2px'};
-            --price-text-color: ${this.config.price_text_color || 'white'};
+            --price-text-color: ${this.config.price_text_color || 'var(--primary-text-color)'};
             --price-font-size: ${this.config.price_font_size || '12px'};
-            --label-text-color: ${this.config.label_text_color || 'white'};
+            --label-text-color: ${this.config.label_text_color || 'var(--primary-text-color)'};
             background-color: transparent;
           "
           @click="${() => this.fireEvent('hass-more-info', entityId)}"
@@ -197,9 +195,9 @@ class TankerkoenigCard extends LitElement {
           style="
             --badge-color: ${circleColor};
             --badge-border-thickness: ${this.config.border_thickness || '2px'};
-            --price-text-color: ${this.config.price_text_color || 'white'};
+            --price-text-color: ${this.config.price_text_color || 'var(--primary-text-color)'};
             --price-font-size: ${this.config.price_font_size || '12px'};
-            --label-text-color: ${this.config.label_text_color || 'white'};
+            --label-text-color: ${this.config.label_text_color || 'var(--primary-text-color)'};
             background-color: transparent;
           "
           @click="${() => this.fireEvent('hass-more-info', entityId)}"
@@ -476,8 +474,8 @@ class TankerkoenigCardEditor extends LitElement {
       icon_unknown: this._config.icon_unknown || ICON_OPTIONS[0],
       opened_color: this._config.opened_color || "dodgerblue",
       closed_color: this._config.closed_color || "dodgerblue",
-      price_text_color: this._config.price_text_color || "white",
-      label_text_color: this._config.label_text_color || "white",
+      price_text_color: this._config.price_text_color ?? "",
+      label_text_color: this._config.label_text_color ?? "",
       border_thickness: this._config.border_thickness || "2px",
       price_font_size: this._config.price_font_size || "12px",
       icon_size: this._config.icon_size || "22px"
@@ -490,11 +488,11 @@ class TankerkoenigCardEditor extends LitElement {
           padding: 10px;
           border: 1px solid #ccc;
           border-radius: 5px;
-          background-color: #f9f9f9;
+          background-color: var(--ha-card-background, var(--card-background-color, #f9f9f9));
           max-width: 400px;
           margin: auto;
           font-size: 12px;
-          color: black;
+          color: var(--primary-text-color, #000);
         }
         .row {
           display: flex;
@@ -504,28 +502,29 @@ class TankerkoenigCardEditor extends LitElement {
         .row label {
           width: 120px;
           margin-right: 4px;
-          color: black;
+          color: var(--secondary-text-color, var(--primary-text-color, #000));
         }
         .row input[type="text"],
         .row select {
           flex: 1;
           padding: 3px;
           font-size: 12px;
-          color: black;
+          color: var(--primary-text-color, #000);
+          background-color: var(--input-fill-color, var(--secondary-background-color, #fff));
+          border: 1px solid var(--divider-color, #ccc);
+          border-radius: 3px;
         }
         .show-options {
           display: flex;
           align-items: center;
+          flex: 1;
+          flex-wrap: wrap;
+          gap: 4px 10px;
         }
         .option {
-          display: flex;
+          display: inline-flex;
           align-items: center;
-          margin-right: 30px;
-        }
-        .option label {
-          position: relative;
-          top: -2px;
-          margin-right: -3px;
+          gap: 6px;
         }
         button {
           background-color: #4caf50;
@@ -535,6 +534,10 @@ class TankerkoenigCardEditor extends LitElement {
           border-radius: 3px;
           cursor: pointer;
           font-size: 12px;
+          text-shadow: 0 0 1px rgba(0, 0, 0, 0.6);
+        }
+        button.button-remove {
+          background-color: #e57373;
         }
         .station {
           border-top: 1px solid #ccc;
@@ -549,20 +552,20 @@ class TankerkoenigCardEditor extends LitElement {
           <input type="text" id="name" .value="${initialValues.name}" @input="${this._nameChanged}">
         </div>
         <!-- Show checkboxes -->
-        <div class="row">
+        <div class="row show-row">
           <label>Show:</label>
           <div class="show-options">
             <div class="option">
-              <label for="show_e5">E5</label>
               <input type="checkbox" id="show_e5" ?checked="${initialValues.show.includes('e5')}" @change="${e => this._toggleShow('e5', e)}">
+              <label for="show_e5">E5</label>
             </div>
             <div class="option">
-              <label for="show_e10">E10</label>
               <input type="checkbox" id="show_e10" ?checked="${initialValues.show.includes('e10')}" @change="${e => this._toggleShow('e10', e)}">
+              <label for="show_e10">E10</label>
             </div>
             <div class="option">
-              <label for="show_diesel">Diesel</label>
               <input type="checkbox" id="show_diesel" ?checked="${initialValues.show.includes('diesel')}" @change="${e => this._toggleShow('diesel', e)}">
+              <label for="show_diesel">Diesel</label>
             </div>
           </div>
         </div>
@@ -616,12 +619,14 @@ class TankerkoenigCardEditor extends LitElement {
         <div class="row">
           <label for="price_text_color">Price Text Color</label>
           <select id="price_text_color" @change="${(e) => { this._config = { ...this._config, price_text_color: e.target.value }; this.fireConfigChanged(); }}">
+            <option value="" ?selected="${initialValues.price_text_color === ""}">Theme default</option>
             ${COLOR_OPTIONS.map(color => html`<option value="${color}" ?selected="${initialValues.price_text_color === color}">${color}</option>`)}
           </select>
         </div>
         <div class="row">
           <label for="label_text_color">Label Text Color</label>
           <select id="label_text_color" @change="${(e) => { this._config = { ...this._config, label_text_color: e.target.value }; this.fireConfigChanged(); }}">
+            <option value="" ?selected="${initialValues.label_text_color === ""}">Theme default</option>
             ${COLOR_OPTIONS.map(color => html`<option value="${color}" ?selected="${initialValues.label_text_color === color}">${color}</option>`)}
           </select>
         </div>
@@ -675,13 +680,13 @@ class TankerkoenigCardEditor extends LitElement {
                 <input type="text" id="logo_${index}" .value="${station.logo}" @input="${(e) => this._updateStationField(e, 'logo', index)}">
               </div>
               <div class="row">
-                <button @click="${() => this._removeStation(index)}">Remove Station</button>
+                <button class="button-remove" @click="${() => this._removeStation(index)}">Remove Station</button>
               </div>
             </div>
           </div>
         `)}
         <div class="row">
-          <button @click="${this._addStation}">Add Station</button>
+          <button class="button-add" @click="${this._addStation}">Add Station</button>
         </div>
       </div>
     `;
