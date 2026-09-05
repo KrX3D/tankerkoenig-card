@@ -181,7 +181,7 @@ Each station in the `stations` list must include the following keys:
 
 - **Example:**  
   For example, if you set `logo: "aral-logo"` for a station, the card will display the image from:  
-  `/www/gasstation_logos/aral-logo.png`
+  `/local/gasstation_logos/aral-logo.png` (which maps to the `www/gasstation_logos/aral-logo.png` file in your Home Assistant config folder)
 
 - **Visual Card Editor:**  
   A basic visual editor is provided for this card. While it offers all the basic functionality, further improvements may be made in the future for tighter integration with Home Assistant’s UI.

@@ -36,11 +36,12 @@ class TankerkoenigCard extends LitElement {
       sortedOpenStations = openStations.sort((a, b) => {
         const stateA = this.hass.states[a[sortKey]];
         const stateB = this.hass.states[b[sortKey]];
-        if (!stateA || stateA.state === 'unknown' || stateA.state === 'unavailable') return 1;
-        if (!stateB || stateB.state === 'unknown' || stateB.state === 'unavailable') return -1;
-        if (stateA.state > stateB.state) return 1;
-        if (stateB.state > stateA.state) return -1;
-        return 0;
+        const invalidA = !stateA || stateA.state === 'unknown' || stateA.state === 'unavailable';
+        const invalidB = !stateB || stateB.state === 'unknown' || stateB.state === 'unavailable';
+        if (invalidA && invalidB) return 0;
+        if (invalidA) return 1;
+        if (invalidB) return -1;
+        return parseFloat(stateA.state) - parseFloat(stateB.state);
       });
     } else {
       sortedOpenStations = openStations;
@@ -391,7 +392,7 @@ class TankerkoenigCardEditor extends LitElement {
 
   setConfig(config) {
     this._config = config;
-    this._stations = config.stations || [];
+    this._stations = config.stations ? config.stations.slice() : [];
   }
 
   fireConfigChanged() {
@@ -440,7 +441,7 @@ class TankerkoenigCardEditor extends LitElement {
   }
 
   _addStation() {
-    this._stations.push({
+    this._stations = [...this._stations, {
       brand: "",
       street: "",
       city: "",
@@ -449,19 +450,21 @@ class TankerkoenigCardEditor extends LitElement {
       diesel: "",
       state: "",
       logo: ""  // New field for logo filename
-    });
+    }];
     this._config = { ...this._config, stations: this._stations };
     this.fireConfigChanged();
   }
 
   _removeStation(index) {
-    this._stations.splice(index, 1);
+    this._stations = this._stations.filter((_, i) => i !== index);
     this._config = { ...this._config, stations: this._stations };
     this.fireConfigChanged();
   }
 
   _updateStationField(event, field, index) {
-    this._stations[index][field] = event.target.value;
+    this._stations = this._stations.map((station, i) =>
+      i === index ? { ...station, [field]: event.target.value } : station
+    );
     this._config = { ...this._config, stations: this._stations };
     this.fireConfigChanged();
   }
@@ -486,7 +489,7 @@ class TankerkoenigCardEditor extends LitElement {
       show: this._config.show || ["e5", "e10", "diesel"],
       sort: this._config.sort || "e5",
       digits: this._config.digits || "2",
-      show_closed: this._config.show_closed !== false,
+      show_closed: this._config.show_closed === true,
       show_header: this._config.show_header !== false,
       stations: this._config.stations || [],
       icon_closed: this._config.icon_closed || ICON_OPTIONS[0],
