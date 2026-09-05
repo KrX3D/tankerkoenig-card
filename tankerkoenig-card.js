@@ -546,7 +546,10 @@ class TankerkoenigCardEditor extends LitElement {
            select's theme colors above, regardless of light/dark theme. */
         .row select option {
           color: var(--primary-text-color, #000);
-          background-color: var(--input-fill-color, var(--secondary-background-color, #fff));
+          /* --input-fill-color is a translucent tint meant to sit over an
+             already-dark card background, not a standalone color - it reads
+             as white here because the popup itself has no dark backdrop. */
+          background-color: var(--secondary-background-color, var(--card-background-color, #fff));
         }
         .show-options {
           display: flex;
