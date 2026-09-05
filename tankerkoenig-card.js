@@ -536,6 +536,13 @@ class TankerkoenigCardEditor extends LitElement {
           border: 1px solid var(--divider-color, #ccc);
           border-radius: 3px;
         }
+        /* Without this, browsers render the open dropdown list with their
+           own default colors (usually a white popup) instead of the
+           select's theme colors above, regardless of light/dark theme. */
+        .row select option {
+          color: var(--primary-text-color, #000);
+          background-color: var(--input-fill-color, var(--secondary-background-color, #fff));
+        }
         .show-options {
           display: flex;
           align-items: center;
