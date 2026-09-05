@@ -484,6 +484,11 @@ class TankerkoenigCardEditor extends LitElement {
 
   render() {
     if (!this.hass || !this._config) return html``;
+    // Tells the browser to render native form controls (including the
+    // <select> popup, which ignores our CSS colors in some Chromium
+    // versions) using its own dark or light widget palette, matching
+    // Home Assistant's active theme instead of always defaulting to light.
+    const colorScheme = this.hass.themes && this.hass.themes.darkMode ? "dark" : "light";
     const initialValues = {
       name: this._config.name || "Tankerkönig",
       show: this._config.show || ["e5", "e10", "diesel"],
@@ -541,7 +546,10 @@ class TankerkoenigCardEditor extends LitElement {
            select's theme colors above, regardless of light/dark theme. */
         .row select option {
           color: var(--primary-text-color, #000);
-          background-color: var(--input-fill-color, var(--secondary-background-color, #fff));
+          /* --input-fill-color is a translucent tint meant to sit over an
+             already-dark card background, not a standalone color - it reads
+             as white here because the popup itself has no dark backdrop. */
+          background-color: var(--secondary-background-color, var(--card-background-color, #fff));
         }
         .show-options {
           display: flex;
@@ -575,7 +583,7 @@ class TankerkoenigCardEditor extends LitElement {
         }
       </style>
 
-      <div class="container">
+      <div class="container" style="color-scheme: ${colorScheme};">
         <div class="row">
           <label for="name">Name</label>
           <input type="text" id="name" .value="${initialValues.name}" @input="${this._nameChanged}">
